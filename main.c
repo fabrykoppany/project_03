@@ -1,6 +1,12 @@
 #include <stdio.h>
 
+#include "file.h"
+
 int main() {
-    printf("Hello, World!\n");
+
+    srand(time(0));
+
+    generateAllFiles();
+
     return 0;
 }
