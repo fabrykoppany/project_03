@@ -6,23 +6,23 @@
 #define PROJECT_03_STRUCTURES_H
 
 typedef struct{
-    int size;
+    int capacity, nr_elements;
     int *elements;
 }INT_ARRAY;
 
 typedef struct{
-    int size;
+    int capacity, nr_elements;
     char **elements;
 }STR_ARRAY;
 
-typedef struct NodeType{
+typedef struct INT_LIST{
     int element;
-    struct NodeType *next;
+    struct INT_LIST *next;
 }INT_LIST_T;
 
-typedef struct NodeType{
+typedef struct STR_ARRAY{
     char *element;
-    struct NodeType *next;
+    struct STR_ARRAY *next;
 }STR_LIST_T;
 
 // rest of structures
