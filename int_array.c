@@ -19,7 +19,7 @@ INT_ARRAY createIntArray(int capacity){
     return new_array;
 }
 
-void readFromInputFile(INT_ARRAY *array, const char *file_name){
+void readIntArrayFromInputFile(INT_ARRAY *array, const char *file_name){
     FILE *input_file = fopen(file_name, "r");
 
     if (input_file == NULL){
@@ -53,6 +53,7 @@ bool removeIntArray(INT_ARRAY *array, int element){
     for (int i = 0; i < array->nr_elements; ++i){
         if (array->elements[i] == element){
             pos = i;
+            break;
         }
     }
 
@@ -79,7 +80,7 @@ bool findIntArray(INT_ARRAY array, int element){
     return false;
 }
 
-int sizeNrOfElementsArray(INT_ARRAY array){
+int sizeNrOfElementsIntArray(INT_ARRAY array){
     return array.nr_elements;
 }
 
@@ -88,7 +89,7 @@ int getNthIntArray(INT_ARRAY array, int n){
         return -1;
     }
 
-    return array.elements[n];
+    return array.elements[n - 1];
 }
 
 void printIntArray(INT_ARRAY array){
@@ -103,4 +104,6 @@ void destroyIntArray(INT_ARRAY *array){
     free(array->elements);
     array->capacity = 0;
     array->nr_elements = 0;
+
+    array = NULL;
 }

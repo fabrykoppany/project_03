@@ -12,10 +12,10 @@
 #include "structures.h"
 
 INT_ARRAY createIntArray(int capacity);
-void readFromInputFile(INT_ARRAY *array, const char *file_name);
+void readIntArrayFromInputFile(INT_ARRAY *array, const char *file_name);
 bool addIntArray(INT_ARRAY *array, int element);
 bool removeIntArray(INT_ARRAY *array, int element);
-int sizeNrOfElementsArray(INT_ARRAY array);
+int sizeNrOfElementsIntArray(INT_ARRAY array);
 int getNthIntArray(INT_ARRAY array, int n);
 bool findIntArray(INT_ARRAY array, int element);
 void printIntArray(INT_ARRAY array);
