@@ -10,8 +10,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "int_array.h"
-#include "file.h"
+#include "../int_array.h"
+#include "../file.h"
 
 void bestCaseIntArray();
 void worstCaseIntArray();
