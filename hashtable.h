@@ -3,8 +3,6 @@
 
 #include "runtime_type.h"
 
-#define NO_ELEMENT createNumber(-1)
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

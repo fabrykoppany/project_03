@@ -87,9 +87,11 @@ TreeNode *deleteNode(TreeNode *root, RUNTIME_TYPE value) {
         root->right = deleteNode(root->right, value);
     } else if (root->left == NULL) {
         result = root->right;
+        freeRuntimeType(root->value);
         free(root);
     } else if (root->right == NULL) {
         result = root->left;
+        freeRuntimeType(root->value);
         free(root);
     } else {
         TreeNode *targetNode = maxValueNode(root->left);

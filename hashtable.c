@@ -25,6 +25,10 @@ HashTable *allocateHashTable(int n) {
 }
 
 void freeHashTable(HashTable *table) {
+    for (int i = 0; i < table->size; ++i) {
+        freeRuntimeType(table->elements[i]);
+    }
+
     free(table->elements);
     free(table);
 }

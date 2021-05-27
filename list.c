@@ -52,6 +52,7 @@ void deleteListNode(ListNode **head, RUNTIME_TYPE key) {
     if (temp != NULL && areTypesEqual(temp->info, key)) {
         // Delete head
         (*head) = temp->next;
+        freeRuntimeType(temp->info);
         free(temp);
         return;
     }
@@ -69,6 +70,7 @@ void deleteListNode(ListNode **head, RUNTIME_TYPE key) {
 
     // Unlink node
     prev->next = temp->next;
+    freeRuntimeType(temp->info);
     free(temp);
 }
 
@@ -77,6 +79,8 @@ void freeList(ListNode **node) {
 
     while (p != NULL) {
         ListNode *next = p->next;
+
+        freeRuntimeType(p->info);
         free(p);
         p = next;
     }

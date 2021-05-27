@@ -32,13 +32,14 @@ inline RUNTIME_TYPE readRuntimeType(FILE *f) {
 
     fscanf(f, "%s", buffer);
 
-    long long number = strtoll(buffer, NULL, 10);
+    char *endPtr = NULL;
+    long long number = strtoll(buffer, &endPtr, 10);
 
-    if (number == 0 && errno == EINVAL) {
+    if (endPtr == NULL || (*endPtr) != '\0') {
         // We couldn't convert the string to a long long,
         // so it must be a character string.
         // Transfer our string to the heap.
-        char *savedString = (char *) malloc(strlen(buffer) * sizeof(char));
+        char *savedString = (char *) malloc((strlen(buffer) + 1) * sizeof(char));
         strcpy(savedString, buffer);
         return createString(savedString);
     }
@@ -96,5 +97,11 @@ inline long long hashRuntimeType(RUNTIME_TYPE type) {
             return (long long) type.data;
         default:
             return -1;
+    }
+}
+
+inline void freeRuntimeType(RUNTIME_TYPE type) {
+    if (type.type == STRING) {
+        free((char *) type.data);
     }
 }

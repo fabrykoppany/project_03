@@ -109,6 +109,10 @@ void printHeap(Heap *heap) {
 }
 
 void freeHeap(Heap *heap) {
+    for (int i = 0; i < heap->size; ++i) {
+        freeRuntimeType(heap->array[i]);
+    }
+
     free(heap->array);
     free(heap);
 }

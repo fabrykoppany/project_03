@@ -7,6 +7,8 @@
 #include <errno.h>
 #include <string.h>
 
+#define NO_ELEMENT createNumber(-1)
+
 typedef enum RuntimeTypes {
     STRING,
     NUMBER
@@ -26,5 +28,6 @@ RUNTIME_TYPE readRuntimeType(FILE *f);
 bool areTypesEqual(RUNTIME_TYPE type1, RUNTIME_TYPE type2);
 int compareTypes(RUNTIME_TYPE type1, RUNTIME_TYPE type2);
 long long hashRuntimeType(RUNTIME_TYPE type);
+void freeRuntimeType(RUNTIME_TYPE type);
 
 #endif //PROJECT_03_RUNTIME_TYPE_H
