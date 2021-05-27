@@ -10,11 +10,12 @@
 #include <string.h>
 #include <time.h>
 
-#include "../int_array.h"
+#include "../array.h"
 #include "../file.h"
+#include "../runtime_type.h"
 
-void bestCaseIntArray();
-void worstCaseIntArray();
-void avgCaseIntArray();
+void bestCaseArray(const char *type, RUNTIME_TYPE element);
+void worstCaseArray(const char *type, RUNTIME_TYPE element);
+void avgCaseArray(const char *type);
 
 #endif //PROJECT_03_INT_ARRAY_TIME_H
