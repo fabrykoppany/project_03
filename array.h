@@ -1,25 +1,26 @@
-//
-// Created by koppa on 2021. 05. 23..
-//
-
-#ifndef PROJECT_03_STR_ARRAY_H
-#define PROJECT_03_STR_ARRAY_H
+#ifndef PROJECT_03_ARRAY_H
+#define PROJECT_03_ARRAY_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 
-#include "structures.h"
+#include "runtime_type.h"
 
-STR_ARRAY createStrArray(int capacity);
-void readStrArrayFromInputFile(STR_ARRAY *array, const char *file_name);
-bool addStrArray(STR_ARRAY *array, char *element);
-bool removeStrArray(STR_ARRAY *array, const char *element);
-int sizeNrOfElementsStrArray(STR_ARRAY array);
-const char *getNthStrArray(STR_ARRAY array, int n);
-bool findStrArray(STR_ARRAY array, const char *element);
-void printStrArray(STR_ARRAY array);
-void destroyStrArray(STR_ARRAY *array);
+typedef struct{
+    int capacity, nr_elements;
+    RUNTIME_TYPE *elements;
+} ARRAY;
 
-#endif //PROJECT_03_STR_ARRAY_H
+ARRAY createArray(int capacity);
+void readArrayFromInputFile(ARRAY *array, const char *file_name);
+bool addArray(ARRAY *array, RUNTIME_TYPE element);
+bool removeArray(ARRAY *array, RUNTIME_TYPE element);
+int sizeNrOfElementsArray(ARRAY array);
+RUNTIME_TYPE getNthArray(ARRAY array, int n);
+bool findArray(ARRAY array, RUNTIME_TYPE element);
+void printArray(ARRAY array);
+void destroyArray(ARRAY *array);
+
+#endif //PROJECT_03_ARRAY_H
