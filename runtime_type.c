@@ -101,7 +101,8 @@ inline long long hashRuntimeType(RUNTIME_TYPE type) {
 }
 
 inline void freeRuntimeType(RUNTIME_TYPE type) {
-    if (type.type == STRING) {
+    if (type.type == STRING && type.data != NULL) {
         free((char *) type.data);
+        type.data = NULL;
     }
 }

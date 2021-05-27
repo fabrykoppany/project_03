@@ -13,9 +13,18 @@
 #include "../array.h"
 #include "../file.h"
 #include "../runtime_type.h"
+#include "../list.h"
 
-void bestCaseArray(const char *type, RUNTIME_TYPE element);
-void worstCaseArray(const char *type, RUNTIME_TYPE element);
-void avgCaseArray(const char *type);
+typedef enum TestType {
+    TEST_ARRAY,
+    TEST_LIST,
+    TEST_BTREE,
+    TEST_HEAP,
+    TEST_HASHTABLE
+} TestType;
+
+void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element);
+void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element);
+void avgCaseTest(TestType test, const char *type);
 
 #endif //PROJECT_03_INT_ARRAY_TIME_H

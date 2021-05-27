@@ -4,135 +4,411 @@
 
 #include "array_time.h"
 
-void bestCaseArray(const char *type, RUNTIME_TYPE element) {
-    ARRAY array = createArray(100000);
+void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
+    ARRAY array;
+    ListNode *head = NULL;
+
+    switch (test) {
+        case TEST_ARRAY:
+            array = createArray(100000);
+            break;
+        case TEST_LIST:
+            head = createListNode();
+            break;
+    }
+
+    int comparisons = 0;
+    int arithmetic = 0;
+
     char *buffer = generateFileName(type, 100000);
 
-    readArrayFromInputFile(&array, buffer);
+    switch (test) {
+        case TEST_ARRAY:
+            readArrayFromInputFile(&array, buffer, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            readListFromInputFile(&head, buffer, &comparisons);
+            break;
+    }
+
+    printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
     free(buffer);
 
-    removeArray(&array, array.elements[0]);
+    comparisons = 0;
+    arithmetic = 0;
+
+    switch (test) {
+        case TEST_ARRAY:
+            removeArray(&array, getBestCaseArray(&array), &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            deleteListNode(&head, getBestCaseList(head), &comparisons);
+            break;
+    }
+
+    printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
+
+    comparisons = 0;
+    arithmetic = 0;
 
     // Adding element
     clock_t start = clock();
-    addArray(&array, element);
+
+    switch (test) {
+        case TEST_ARRAY:
+            addArray(&array, element, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            appendListNode(&head, element, &comparisons);
+            break;
+    }
+
     clock_t end = clock();
     double elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("Adding element - best case: %.30f\n", elapsed_time);
 
     // Searching element
+    comparisons = 0;
+    arithmetic = 0;
+    bool found = false;
+
     start = clock();
-    printf(findArray(array, element) ? "The searched elements was found.\n" : "The searched elements wasn't found\n");
+
+    switch (test) {
+        case TEST_ARRAY:
+            found = findArray(array, element, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            found = findElementInList(head, element, &comparisons, &arithmetic);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
+    printf(found ? "The searched element was found.\n" : "The searched element wasn't found\n");
+    printf("Searching element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
     printf("Searching element - best case (first element): %.30f\n", elapsed_time);
 
     // Getting element
+    comparisons = 0;
+    arithmetic = 0;
     start = clock();
-    printf("\n");
-    printRuntimeType(getNthArray(array, 1));
-    printf("\n");
+    RUNTIME_TYPE bestElement;
+
+    switch (test) {
+        case TEST_ARRAY:
+            bestElement = getBestCaseArray(&array);
+            break;
+        case TEST_LIST:
+            bestElement = getBestCaseList(head);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
+
+    printf("\n");
+    printRuntimeType(bestElement);
+    printf("\n");
     printf("Getting n^th element - best case (first element): %.30f\n", elapsed_time);
+    printf("Getting n^th element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
     // Removing element
+    comparisons = 0;
+    arithmetic = 0;
     start = clock();
-    removeArray(&array, element);
+
+    switch (test) {
+        case TEST_ARRAY:
+            removeArray(&array, bestElement, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            deleteListNode(&head, bestElement, &comparisons);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("Removing element - best case (first element): %.30f\n", elapsed_time);
+    printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
-    destroyArray(&array);
+    switch (test) {
+        case TEST_ARRAY:
+            destroyArray(&array);
+            break;
+        case TEST_LIST:
+            freeList(&head);
+            break;
+    }
 }
 
-void worstCaseArray(const char *type, RUNTIME_TYPE element) {
-    ARRAY array = createArray(100000);
+void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
+    ARRAY array;
+    ListNode *head = NULL;
+
+    switch (test) {
+        case TEST_ARRAY:
+            array = createArray(100000);
+            break;
+        case TEST_LIST:
+            head = createListNode();
+            break;
+    }
+
     char *buffer = generateFileName(type, 100000);
 
-    readArrayFromInputFile(&array, buffer);
+    int comparisons = 0;
+    int arithmetic = 0;
+
+    switch (test) {
+        case TEST_ARRAY:
+            readArrayFromInputFile(&array, buffer, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            readListFromInputFile(&head, buffer, &comparisons);
+            break;
+    }
+
+    printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
     free(buffer);
 
-    removeArray(&array, array.elements[0]);
+    comparisons = 0;
+    arithmetic = 0;
+
+    switch (test) {
+        case TEST_ARRAY:
+            removeArray(&array, getWorstCaseArray(&array), &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            deleteListNode(&head, getWorstCaseList(head), &comparisons);
+            break;
+    }
+
+    printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
     // Adding element
     clock_t start = clock();
-    addArray(&array, element);
+
+    switch (test) {
+        case TEST_ARRAY:
+            addArray(&array, element, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            appendListNode(&head, element, &comparisons);
+            break;
+    }
+
     clock_t end = clock();
     double elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("Adding element - worst case: %.30f\n", elapsed_time);
+    printf("Adding element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
     // Searching element
+    comparisons = 0;
+    arithmetic = 0;
+    bool found = false;
+
     start = clock();
-    printf(findArray(array, element) ? "The searched elements was found.\n" : "The searched elements wasn't found\n");
+
+    switch (test) {
+        case TEST_ARRAY:
+            found = findArray(array, element, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            found = findElementInList(head, element, &comparisons, &arithmetic);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
+    printf(found ? "The searched element was found.\n" : "The searched element wasn't found\n");
     printf("Searching element - worst case (final element): %.30f\n", elapsed_time);
 
     // Getting element
+    comparisons = 0;
+    arithmetic = 0;
     start = clock();
-    printf("\n");
-    printRuntimeType(getNthArray(array, 100000));
-    printf("\n");
+    RUNTIME_TYPE worstElement;
+
+    switch (test) {
+        case TEST_ARRAY:
+            worstElement = getWorstCaseArray(&array);
+            break;
+        case TEST_LIST:
+            worstElement = getWorstCaseList(head);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
+
     printf("Getting n^th element - worst case (final element): %.30f\n", elapsed_time);
+    printf("Getting n^th element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
     // Removing element
+    comparisons = 0;
+    arithmetic = 0;
     start = clock();
-    removeArray(&array, element);
+
+    switch (test) {
+        case TEST_ARRAY:
+            removeArray(&array, worstElement, &comparisons, &arithmetic);
+            break;
+        case TEST_LIST:
+            deleteListNode(&head, worstElement, &comparisons);
+            break;
+    }
+
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
     printf("Removing element - worst case (final element): %.30f\n", elapsed_time);
+    printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
-    destroyArray(&array);
+    switch (test) {
+        case TEST_ARRAY:
+            destroyArray(&array);
+            break;
+        case TEST_LIST:
+            freeList(&head);
+            break;
+    }
 }
 
-void avgCaseArray(const char *type) {
-    double time1, time2, time3, time4;
+void avgCaseTest(TestType test, const char *type) {
+    double time0, time1, time2, time3, time4;
 
-    time1 = time2 = time3 = time4 = 0;
+    time0 = time1 = time2 = time3 = time4 = 0;
 
     for (int i = 10; i < 1000000; i *= 10){
         char *buffer = generateFileName(type, i);
 
-        ARRAY array = createArray(i);
+        ARRAY array;
+        ListNode *head = NULL;
 
-        readArrayFromInputFile(&array, buffer);
+        switch (test) {
+            case TEST_ARRAY:
+                array = createArray(i);
+                break;
+            case TEST_LIST:
+                head = createListNode();
+                break;
+        }
+
+        int comparisons = 0;
+        int arithmetic = 0;
+
+        switch (test) {
+            case TEST_ARRAY:
+                readArrayFromInputFile(&array, buffer, &comparisons, &arithmetic);
+                break;
+            case TEST_LIST:
+                readListFromInputFile(&head, buffer, &comparisons);
+                break;
+        }
 
         free(buffer);
+        printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
-        RUNTIME_TYPE num = array.elements[array.nr_elements / 2];
+        RUNTIME_TYPE num;
+
+        switch (test) {
+            case TEST_ARRAY:
+                num = getWorstCaseArray(&array);
+                break;
+            case TEST_LIST:
+                num = getWorstCaseList(head);
+                break;
+        }
 
         // Adding element
+        comparisons = 0;
+        arithmetic = 0;
         clock_t start = clock();
-        addArray(&array, num);
+
+        switch (test) {
+            case TEST_ARRAY:
+                addArray(&array, num, &comparisons, &arithmetic);
+                break;
+            case TEST_LIST:
+                appendListNode(&head, num, &comparisons);
+                break;
+        }
+
         clock_t end = clock();
         time1 += (double) (end - start) / CLOCKS_PER_SEC;
+        printf("Adding element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
         // Searching element
+        comparisons = 0;
+        arithmetic = 0;
+        bool found = false;
+
         start = clock();
-        printf(findArray(array, num) ? "The searched elements was found.\n" : "The searched elements wasn't found\n");
+
+        switch (test) {
+            case TEST_ARRAY:
+                found = findArray(array, num, &comparisons, &arithmetic);
+                break;
+            case TEST_LIST:
+                found = findElementInList(head, num, &comparisons, &arithmetic);
+                break;
+        }
+
         end = clock();
+        printf(found ? "The searched element was found.\n" : "The searched element wasn't found\n");
         time2 += (double) (end - start) / CLOCKS_PER_SEC;
 
         // Getting element
+        comparisons = 0;
+        arithmetic = 0;
         start = clock();
+        RUNTIME_TYPE avgElement;
+
+        switch (test) {
+            case TEST_ARRAY:
+                avgElement = getAvgCaseArray(&array);
+                break;
+            case TEST_LIST:
+                avgElement = getAvgCaseList(head);
+                break;
+        }
+
+        end = clock();
+
         printf("\n");
-        printRuntimeType(getNthArray(array, array.nr_elements / 2));
+        printRuntimeType(avgElement);
         printf("\n");
         end = clock();
         time3 += (double) (end - start) / CLOCKS_PER_SEC;
 
         // Removing element
+        comparisons = 0;
+        arithmetic = 0;
         start = clock();
-        removeArray(&array, num);
-        end = clock();
-        time4 = (double) (end - start) / CLOCKS_PER_SEC;
 
-        destroyArray(&array);
+        switch (test) {
+            case TEST_ARRAY:
+                removeArray(&array, avgElement, &comparisons, &arithmetic);
+                break;
+            case TEST_LIST:
+                deleteListNode(&head, avgElement, &comparisons);
+                break;
+        }
+
+        end = clock();
+        time4 += (double) (end - start) / CLOCKS_PER_SEC;
+
+        switch (test) {
+            case TEST_ARRAY:
+                destroyArray(&array);
+                break;
+            case TEST_LIST:
+                freeList(&head);
+                break;
+        }
     }
 
+    printf("Creating structure - average case: %.30f\n", time0 / 5);
     printf("Adding element - average case: %.30f\n", time1 / 5);
     printf("Searching element - average case: %.30f\n", time2 / 5);
     printf("Getting n^th element - average case: %.30f\n", time3 / 5);

@@ -14,9 +14,15 @@ typedef struct ListNode {
 
 ListNode *createListNode();
 void printList(ListNode *list);
-bool appendListNode(ListNode **list, RUNTIME_TYPE value);
-void deleteListNode(ListNode **node, RUNTIME_TYPE element);
+void readListFromInputFile(ListNode **list, const char *file_name, int *comparisons);
+ListNode *appendListNode(ListNode **list, RUNTIME_TYPE value, int *comparisons);
+void deleteListNode(ListNode **node, RUNTIME_TYPE element, int *comparisons);
+void freeList(ListNode **node);
 int countListElements(ListNode *list);
-int findElementInList(ListNode *node, RUNTIME_TYPE value);
+int findElementInList(ListNode *node, RUNTIME_TYPE value, int *comparisons, int *arithmetic);
+
+RUNTIME_TYPE getWorstCaseList(ListNode *node);
+RUNTIME_TYPE getBestCaseList(ListNode *node);
+RUNTIME_TYPE getAvgCaseList(ListNode *node);
 
 #endif //PROJECT_03_LIST_H

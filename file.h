@@ -10,6 +10,10 @@
 #include <string.h>
 #include <time.h>
 
+#define INT_FILE "int"
+#define STR_FILE "string"
+#define COMBINED_FILE "combined"
+
 const char *generateFileName(const char *type, int n);
 void generateStringFile(int n);
 void generateIntFile(int n);

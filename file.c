@@ -5,20 +5,14 @@
 #include "file.h"
 
 const char *generateFileName(const char *type, int n){
-    char *buffer1 = (char *) malloc(50 * sizeof(char));
-    char *buffer2 = (char *) malloc(50 * sizeof(char));
+    char *buffer1 = (char *) calloc(50, sizeof(char));
 
-    if (buffer1 == NULL || buffer2 == NULL){
+    if (buffer1 == NULL){
         printf("Error allocating memory for buffer!\n");
         exit(-1);
     }
 
-    strcpy(buffer1, type);
-    sprintf(buffer2, "%i", n);
-    strcat(buffer1, buffer2);
-    strcat(buffer1, ".txt\0");
-
-    free(buffer2);
+    sprintf(buffer1, "%s%i.txt", type, n);
 
     buffer1 = realloc(buffer1, strlen(buffer1) * sizeof(char));
 
@@ -26,7 +20,7 @@ const char *generateFileName(const char *type, int n){
 }
 
 void generateStringFile(int n){
-    const char *file_name = generateFileName("string", n);
+    const char *file_name = generateFileName(STR_FILE, n);
     FILE *output_file = fopen(file_name, "w");
 
     if (output_file == NULL){
@@ -51,7 +45,7 @@ void generateStringFile(int n){
 }
 
 void generateIntFile(int n){
-    const char *file_name = generateFileName("int", n);
+    const char *file_name = generateFileName(INT_FILE, n);
     FILE *output_file = fopen(file_name, "w");
 
     if (output_file == NULL){
@@ -70,7 +64,7 @@ void generateIntFile(int n){
 }
 
 void generateCombinedFile(int n){
-    const char *file_name = generateFileName("combined", n);
+    const char *file_name = generateFileName(COMBINED_FILE, n);
     FILE *output_file = fopen(file_name, "w");
 
     if (output_file == NULL){
