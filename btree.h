@@ -10,15 +10,22 @@ typedef struct TreeNode {
 } TreeNode;
 
 TreeNode *createNode(RUNTIME_TYPE value);
-TreeNode *insertNode(TreeNode *root, RUNTIME_TYPE value);
-TreeNode *searchTree(TreeNode *root, RUNTIME_TYPE value);
-TreeNode *minValueNode(TreeNode *root);
-TreeNode *maxValueNode(TreeNode *root);
-TreeNode *deleteNode(TreeNode *root, RUNTIME_TYPE value);
-int countTree(TreeNode *root);
+TreeNode *insertNode(TreeNode *root, RUNTIME_TYPE value, int *comparisons, int *arithmetic);
+TreeNode *searchTree(TreeNode *root, RUNTIME_TYPE value, int *comparisons, int *arithmetic);
+TreeNode *minValueNode(TreeNode *root, int *comparisons);
+TreeNode *maxValueNode(TreeNode *root, int *comparisons);
+TreeNode *deleteNode(TreeNode *root, RUNTIME_TYPE value, int *comparisons);
+int countTree(TreeNode *root, int *comparisons, int *arithmetics);
 void printPreorder(TreeNode *root);
 void printInorder(TreeNode *root);
 void printPostorder(TreeNode *root);
+int height(TreeNode *tree);
+TreeNode * readBtreeFromInputFile(TreeNode *tree, const char *file_name, int *comparisons, int *arithmetic);
+TreeNode *destroyBtree(TreeNode *tree);
+
+RUNTIME_TYPE getWorstCaseBtree(TreeNode *tree, int height);
+RUNTIME_TYPE getBestCaseBtree(TreeNode *tree);
+RUNTIME_TYPE getAvgCaseBtree(TreeNode *tree, int height);
 
 #include <stdlib.h>
 #include <stdio.h>

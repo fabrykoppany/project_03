@@ -7,6 +7,7 @@
 void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ARRAY array;
     ListNode *head = NULL;
+    TreeNode *tree = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -14,6 +15,8 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             head = createListNode();
+            break;
+        case TEST_BTREE:
             break;
     }
 
@@ -29,6 +32,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             readListFromInputFile(&head, buffer, &comparisons);
             break;
+        case TEST_BTREE:
+            tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
+            break;
     }
 
     printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -43,6 +49,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             deleteListNode(&head, getBestCaseList(head), &comparisons);
+            break;
+        case TEST_BTREE:
+            tree = deleteNode(tree, getBestCaseBtree(tree), &comparisons);
             break;
     }
 
@@ -60,6 +69,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             appendListNode(&head, element, &comparisons);
+            break;
+        case TEST_BTREE:
+            tree = insertNode(tree, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -81,6 +93,12 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             found = findElementInList(head, element, &comparisons, &arithmetic);
             break;
+        case TEST_BTREE:
+            if (searchTree(tree, element, &comparisons, &arithmetic) == NULL){
+                found = false;
+            }
+            else found = true;
+            break;
     }
 
     end = clock();
@@ -101,6 +119,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             bestElement = getBestCaseList(head);
+            break;
+        case TEST_BTREE:
+            bestElement = getBestCaseBtree(tree);
             break;
     }
 
@@ -125,6 +146,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             deleteListNode(&head, bestElement, &comparisons);
             break;
+        case TEST_BTREE:
+            tree = deleteNode(tree, bestElement, &comparisons);
+            break;
     }
 
     end = clock();
@@ -139,12 +163,16 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             freeList(&head);
             break;
+        case TEST_BTREE:
+            //tree = destroyBtree(tree);
+            break;
     }
 }
 
 void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ARRAY array;
     ListNode *head = NULL;
+    TreeNode *tree = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -152,6 +180,8 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             head = createListNode();
+            break;
+        case TEST_BTREE:
             break;
     }
 
@@ -167,6 +197,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             readListFromInputFile(&head, buffer, &comparisons);
             break;
+        case TEST_BTREE:
+            tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
+            break;
     }
 
     printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -175,12 +208,17 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     comparisons = 0;
     arithmetic = 0;
 
+    int level = height(tree);
+
     switch (test) {
         case TEST_ARRAY:
             removeArray(&array, getWorstCaseArray(&array), &comparisons, &arithmetic);
             break;
         case TEST_LIST:
             deleteListNode(&head, getWorstCaseList(head), &comparisons);
+            break;
+        case TEST_BTREE:
+            tree = deleteNode(tree, getWorstCaseBtree(tree, level), &comparisons);
             break;
     }
 
@@ -195,6 +233,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             appendListNode(&head, element, &comparisons);
+            break;
+        case TEST_BTREE:
+            tree = insertNode(tree, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -217,6 +258,12 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             found = findElementInList(head, element, &comparisons, &arithmetic);
             break;
+        case TEST_BTREE:
+            if (searchTree(tree, element, &comparisons, &arithmetic) == NULL){
+                found = false;
+            }
+            else found = true;
+            break;
     }
 
     end = clock();
@@ -236,6 +283,10 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_LIST:
             worstElement = getWorstCaseList(head);
+            break;
+        case TEST_BTREE:
+            level = height(tree);
+            worstElement = getWorstCaseBtree(tree, level);
             break;
     }
 
@@ -257,6 +308,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             deleteListNode(&head, worstElement, &comparisons);
             break;
+        case TEST_BTREE:
+            tree = deleteNode(tree, worstElement, &comparisons);
+            break;
     }
 
     end = clock();
@@ -271,6 +325,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_LIST:
             freeList(&head);
             break;
+        case TEST_BTREE:
+            //tree = destroyBtree(tree);
+            break;
     }
 }
 
@@ -284,6 +341,7 @@ void avgCaseTest(TestType test, const char *type) {
 
         ARRAY array;
         ListNode *head = NULL;
+        TreeNode *tree = NULL;
 
         switch (test) {
             case TEST_ARRAY:
@@ -291,6 +349,8 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_LIST:
                 head = createListNode();
+                break;
+            case TEST_BTREE:
                 break;
         }
 
@@ -304,6 +364,8 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_LIST:
                 readListFromInputFile(&head, buffer, &comparisons);
                 break;
+            case TEST_BTREE:
+                tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
         }
 
         free(buffer);
@@ -311,12 +373,18 @@ void avgCaseTest(TestType test, const char *type) {
 
         RUNTIME_TYPE num;
 
+        int level;
+
         switch (test) {
             case TEST_ARRAY:
                 num = getWorstCaseArray(&array);
                 break;
             case TEST_LIST:
                 num = getWorstCaseList(head);
+                break;
+            case TEST_BTREE:
+                level = height(tree);
+                num = getWorstCaseBtree(tree, level);
                 break;
         }
 
@@ -331,6 +399,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_LIST:
                 appendListNode(&head, num, &comparisons);
+                break;
+            case TEST_BTREE:
+                tree = insertNode(tree, num, &comparisons, &arithmetic);
                 break;
         }
 
@@ -352,6 +423,12 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_LIST:
                 found = findElementInList(head, num, &comparisons, &arithmetic);
                 break;
+            case TEST_BTREE:
+                if (searchTree(tree, num, &comparisons, &arithmetic) == NULL){
+                    found = false;
+                }
+                else found = true;
+                break;
         }
 
         end = clock();
@@ -370,6 +447,10 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_LIST:
                 avgElement = getAvgCaseList(head);
+                break;
+            case TEST_BTREE:
+                level = height(tree) / 2;
+                avgElement = getAvgCaseBtree(tree, level);
                 break;
         }
 
@@ -393,6 +474,9 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_LIST:
                 deleteListNode(&head, avgElement, &comparisons);
                 break;
+            case TEST_BTREE:
+                tree = deleteNode(tree, avgElement, &comparisons);
+                break;
         }
 
         end = clock();
@@ -404,6 +488,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_LIST:
                 freeList(&head);
+                break;
+            case TEST_BTREE:
+                //tree = destroyBtree(tree);
                 break;
         }
     }

@@ -28,7 +28,7 @@ void readArrayFromInputFile(ARRAY *array, const char *file_name, int *comparison
     int n;
     fscanf(input_file, "%i", &n);
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; *arithmetic = *arithmetic + 1, (*comparisons) = (*comparisons) + 1, ++i) {
         addArray(array, readRuntimeType(input_file), comparisons, arithmetic);
     }
 
@@ -50,7 +50,7 @@ bool addArray(ARRAY *array, RUNTIME_TYPE element, int *comparisons, int *arithme
 bool removeArray(ARRAY *array, RUNTIME_TYPE element, int *comparisons, int *arithmetic) {
     int pos = -1;
 
-    for (int i = 0; i < array->nr_elements; ++i) {
+    for (int i = 0; i < array->nr_elements; *arithmetic = *arithmetic + 1, ++i) {
         (*comparisons) = (*comparisons) + 1;
 
         if (areTypesEqual(array->elements[i], element)) {
