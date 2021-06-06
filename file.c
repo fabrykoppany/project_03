@@ -1,6 +1,6 @@
 #include "file.h"
 
-const char *generateFileName(const char *type, int n){
+char *generateFileName(const char *type, int n){
     char *buffer1 = (char *) calloc(50, sizeof(char));
 
     if (buffer1 == NULL){

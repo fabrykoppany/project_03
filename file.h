@@ -10,7 +10,7 @@
 #define STR_FILE "string"
 #define COMBINED_FILE "combined"
 
-const char *generateFileName(const char *type, int n);
+char *generateFileName(const char *type, int n);
 void generateStringFile(int n);
 void generateIntFile(int n);
 void generateAllFiles();
