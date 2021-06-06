@@ -5,23 +5,12 @@
 
 #include "time/array_time.h"
 
+void runTest(TestType type, const char *fileType, int n);
 void askForCase(TestType type, const char *fileType);
 void askForFileType(TestType type);
 void askForDataStructure();
 
-void askForCase(TestType type, const char *fileType) {
-    system("cls");
-    printf("STRUCTURE TESTER\n");
-    printf("================\n");
-    printf("Which case would you like to test?\n\n");
-    printf("1. Worst Case\n");
-    printf("2. Best Case\n");
-    printf("3. Average Case\n");
-    printf("4. Back\n\n>> ");
-
-    int n;
-    scanf("%i", &n);
-
+void runTest(TestType type, const char *fileType, int n) {
     switch (n) {
         case 1: {
             RUNTIME_TYPE element;
@@ -60,6 +49,22 @@ void askForCase(TestType type, const char *fileType) {
     printf("Press any key to go back to the main menu...\n");
     getch();
     askForDataStructure();
+}
+
+void askForCase(TestType type, const char *fileType) {
+    system("cls");
+    printf("STRUCTURE TESTER\n");
+    printf("================\n");
+    printf("Which case would you like to test?\n\n");
+    printf("1. Worst Case\n");
+    printf("2. Best Case\n");
+    printf("3. Average Case\n");
+    printf("4. Back\n\n>> ");
+
+    int n;
+    scanf("%i", &n);
+
+    runTest(type, fileType, n);
 }
 
 void askForFileType(TestType type) {
@@ -136,10 +141,6 @@ int main() {
 
     generateAllFiles();
     askForDataStructure();
-
-    worstCaseTest(TEST_LIST, INT_FILE, createNumber(5260));
-    bestCaseTest(TEST_LIST, INT_FILE, createNumber(597));
-    avgCaseTest(TEST_LIST, COMBINED_FILE);
 
     return 0;
 }

@@ -8,6 +8,7 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ARRAY array;
     ListNode *head = NULL;
     TreeNode *tree = NULL;
+    HashTable *table = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -17,6 +18,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             head = createListNode();
             break;
         case TEST_BTREE:
+            break;
+        case TEST_HASHTABLE:
+            table = allocateHashTable(100000);
             break;
     }
 
@@ -35,6 +39,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
             break;
+        case TEST_HASHTABLE:
+            readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
+            break;
     }
 
     printf("Creating structure took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -52,6 +59,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_BTREE:
             tree = deleteNode(tree, getBestCaseBtree(tree), &comparisons);
+            break;
+        case TEST_HASHTABLE:
+            removeHashTable(table, getBestCaseTable(table), &comparisons, &arithmetic);
             break;
     }
 
@@ -123,6 +133,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             bestElement = getBestCaseBtree(tree);
             break;
+        case TEST_HASHTABLE:
+            bestElement = getBestCaseTable(table);
+            break;
     }
 
     end = clock();
@@ -149,6 +162,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             tree = deleteNode(tree, bestElement, &comparisons);
             break;
+        case TEST_HASHTABLE:
+            removeHashTable(table, bestElement, &comparisons, &arithmetic);
+            break;
     }
 
     end = clock();
@@ -166,6 +182,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             //tree = destroyBtree(tree);
             break;
+        case TEST_HASHTABLE:
+            freeHashTable(table);
+            break;
     }
 }
 
@@ -173,6 +192,7 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ARRAY array;
     ListNode *head = NULL;
     TreeNode *tree = NULL;
+    HashTable *table = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -182,6 +202,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             head = createListNode();
             break;
         case TEST_BTREE:
+            break;
+        case TEST_HASHTABLE:
+            table = allocateHashTable(100000);
             break;
     }
 
@@ -199,6 +222,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_BTREE:
             tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
+            break;
+        case TEST_HASHTABLE:
+            readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
             break;
     }
 
@@ -220,6 +246,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             tree = deleteNode(tree, getWorstCaseBtree(tree, level), &comparisons);
             break;
+        case TEST_HASHTABLE:
+            removeHashTable(table, getWorstCaseTable(table), &comparisons, &arithmetic);
+            break;
     }
 
     printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -236,6 +265,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_BTREE:
             tree = insertNode(tree, element, &comparisons, &arithmetic);
+            break;
+        case TEST_HASHTABLE:
+            insertHashTable(table, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -259,10 +291,13 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             found = findElementInList(head, element, &comparisons, &arithmetic);
             break;
         case TEST_BTREE:
-            if (searchTree(tree, element, &comparisons, &arithmetic) == NULL){
+            if (searchTree(tree, element, &comparisons, &arithmetic) == NULL) {
                 found = false;
-            }
-            else found = true;
+            } else found = true;
+            comparisons++;
+            break;
+        case TEST_HASHTABLE:
+            found = findHashTable(table, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -288,6 +323,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             level = height(tree);
             worstElement = getWorstCaseBtree(tree, level);
             break;
+        case TEST_HASHTABLE:
+            worstElement = getWorstCaseTable(table);
+            break;
     }
 
     end = clock();
@@ -311,6 +349,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             tree = deleteNode(tree, worstElement, &comparisons);
             break;
+        case TEST_HASHTABLE:
+            removeHashTable(table, worstElement, &comparisons, &arithmetic);
+            break;
     }
 
     end = clock();
@@ -328,6 +369,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_BTREE:
             //tree = destroyBtree(tree);
             break;
+        case TEST_HASHTABLE:
+            freeHashTable(table);
+            break;
     }
 }
 
@@ -342,6 +386,7 @@ void avgCaseTest(TestType test, const char *type) {
         ARRAY array;
         ListNode *head = NULL;
         TreeNode *tree = NULL;
+        HashTable *table = NULL;
 
         switch (test) {
             case TEST_ARRAY:
@@ -351,6 +396,9 @@ void avgCaseTest(TestType test, const char *type) {
                 head = createListNode();
                 break;
             case TEST_BTREE:
+                break;
+            case TEST_HASHTABLE:
+                table = allocateHashTable(100000);
                 break;
         }
 
@@ -366,6 +414,10 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_BTREE:
                 tree = readBtreeFromInputFile(tree, buffer, &comparisons, &arithmetic);
+                break;
+            case TEST_HASHTABLE:
+                readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
+                break;
         }
 
         free(buffer);
@@ -386,6 +438,9 @@ void avgCaseTest(TestType test, const char *type) {
                 level = height(tree);
                 num = getWorstCaseBtree(tree, level);
                 break;
+            case TEST_HASHTABLE:
+                num = getWorstCaseTable(table);
+                break;
         }
 
         // Adding element
@@ -402,6 +457,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_BTREE:
                 tree = insertNode(tree, num, &comparisons, &arithmetic);
+                break;
+            case TEST_HASHTABLE:
+                insertHashTable(table, num, &comparisons, &arithmetic);
                 break;
         }
 
@@ -429,6 +487,9 @@ void avgCaseTest(TestType test, const char *type) {
                 }
                 else found = true;
                 break;
+            case TEST_HASHTABLE:
+                found = findHashTable(table, num, &comparisons, &arithmetic);
+                break;
         }
 
         end = clock();
@@ -451,6 +512,9 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_BTREE:
                 level = height(tree) / 2;
                 avgElement = getAvgCaseBtree(tree, level);
+                break;
+            case TEST_HASHTABLE:
+                avgElement = getAvgCaseTable(table);
                 break;
         }
 
@@ -477,6 +541,9 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_BTREE:
                 tree = deleteNode(tree, avgElement, &comparisons);
                 break;
+            case TEST_HASHTABLE:
+                removeHashTable(table, avgElement, &comparisons, &arithmetic);
+                break;
         }
 
         end = clock();
@@ -491,6 +558,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_BTREE:
                 //tree = destroyBtree(tree);
+                break;
+            case TEST_HASHTABLE:
+                freeHashTable(table);
                 break;
         }
     }

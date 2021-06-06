@@ -15,10 +15,15 @@ typedef struct HashTable {
 
 HashTable *allocateHashTable(int n);
 void freeHashTable(HashTable *table);
-bool insertHashTable(HashTable *table, RUNTIME_TYPE element);
-int findHashTable(HashTable *table, RUNTIME_TYPE element);
-bool removeHashTable(HashTable *table, RUNTIME_TYPE element);
-int countHashTable(HashTable *table);
+void readTableFromInputFile(HashTable *table, const char *file_name, int *comparisons, int *arithmetic);
+bool insertHashTable(HashTable *table, RUNTIME_TYPE element, int *comparisons, int *arithmetic);
+int findHashTable(HashTable *table, RUNTIME_TYPE element, int *comparisons, int *arithmetic);
+bool removeHashTable(HashTable *table, RUNTIME_TYPE element, int *comparisons, int *arithmetic);
+int countHashTable(HashTable *table, int *comparisons, int *arithmetic);
 void printHashTable(HashTable *table);
+
+RUNTIME_TYPE getWorstCaseTable(HashTable *table);
+RUNTIME_TYPE getBestCaseTable(HashTable *table);
+RUNTIME_TYPE getAvgCaseTable(HashTable *table);
 
 #endif //PROJECT_03_HASHTABLE_H

@@ -15,6 +15,7 @@
 #include "../runtime_type.h"
 #include "../list.h"
 #include "../btree.h"
+#include "../hashtable.h"
 
 typedef enum TestType {
     TEST_ARRAY,
