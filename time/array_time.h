@@ -1,7 +1,3 @@
-//
-// Created by koppa on 2021. 05. 23..
-//
-
 #ifndef PROJECT_03_INT_ARRAY_TIME_H
 #define PROJECT_03_INT_ARRAY_TIME_H
 
@@ -16,6 +12,7 @@
 #include "../list.h"
 #include "../btree.h"
 #include "../hashtable.h"
+#include "../heap.h"
 
 typedef enum TestType {
     TEST_ARRAY,

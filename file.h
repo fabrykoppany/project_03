@@ -1,7 +1,3 @@
-//
-// Created by koppa on 2021. 05. 22..
-//
-
 #ifndef PROJECT_03_FILE_H
 #define PROJECT_03_FILE_H
 

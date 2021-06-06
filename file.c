@@ -1,7 +1,3 @@
-//
-// Created by koppa on 2021. 05. 22..
-//
-
 #include "file.h"
 
 const char *generateFileName(const char *type, int n){

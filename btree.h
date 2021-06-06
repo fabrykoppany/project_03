@@ -21,7 +21,7 @@ void printInorder(TreeNode *root);
 void printPostorder(TreeNode *root);
 int height(TreeNode *tree);
 TreeNode * readBtreeFromInputFile(TreeNode *tree, const char *file_name, int *comparisons, int *arithmetic);
-TreeNode *destroyBtree(TreeNode *tree);
+void freeTree(TreeNode *tree);
 
 RUNTIME_TYPE getWorstCaseBtree(TreeNode *tree, int height);
 RUNTIME_TYPE getBestCaseBtree(TreeNode *tree);

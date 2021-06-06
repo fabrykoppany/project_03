@@ -1,7 +1,3 @@
-//
-// Created by koppa on 2021. 05. 23..
-//
-
 #include "array_time.h"
 
 void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
@@ -9,6 +5,7 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ListNode *head = NULL;
     TreeNode *tree = NULL;
     HashTable *table = NULL;
+    Heap *heap = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -22,11 +19,15 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             table = allocateHashTable(100000);
             break;
+        case TEST_HEAP:
+            heap = createHeap(100000);
+            break;
     }
 
     int comparisons = 0;
     int arithmetic = 0;
 
+    // Next, read the test file according to the test type
     char *buffer = generateFileName(type, 100000);
 
     switch (test) {
@@ -41,6 +42,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_HASHTABLE:
             readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
+            break;
+        case TEST_HEAP:
+            readHeapFromInputFile(heap, buffer, &comparisons, &arithmetic);
             break;
     }
 
@@ -63,6 +67,8 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             removeHashTable(table, getBestCaseTable(table), &comparisons, &arithmetic);
             break;
+        case TEST_HEAP:
+            break;
     }
 
     printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -82,6 +88,12 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_BTREE:
             tree = insertNode(tree, element, &comparisons, &arithmetic);
+            break;
+        case TEST_HASHTABLE:
+            insertHashTable(table, element, &comparisons, &arithmetic);
+            break;
+        case TEST_HEAP:
+            insertHeap(heap, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -108,6 +120,15 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
                 found = false;
             }
             else found = true;
+            comparisons++;
+            break;
+        case TEST_HASHTABLE:
+            found = findHashTable(table, element, &comparisons, &arithmetic) != -1;
+            comparisons++;
+            break;
+        case TEST_HEAP:
+            found = getHeapIndex(heap, element, &comparisons, &arithmetic) != -1;
+            comparisons++;
             break;
     }
 
@@ -135,6 +156,9 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_HASHTABLE:
             bestElement = getBestCaseTable(table);
+            break;
+        case TEST_HEAP:
+            bestElement = getBestCaseHeap(heap);
             break;
     }
 
@@ -165,6 +189,8 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             removeHashTable(table, bestElement, &comparisons, &arithmetic);
             break;
+        case TEST_HEAP:
+            break;
     }
 
     end = clock();
@@ -180,10 +206,13 @@ void bestCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             freeList(&head);
             break;
         case TEST_BTREE:
-            //tree = destroyBtree(tree);
+            freeTree(tree);
             break;
         case TEST_HASHTABLE:
             freeHashTable(table);
+            break;
+        case TEST_HEAP:
+            freeHeap(heap);
             break;
     }
 }
@@ -193,6 +222,7 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
     ListNode *head = NULL;
     TreeNode *tree = NULL;
     HashTable *table = NULL;
+    Heap *heap = NULL;
 
     switch (test) {
         case TEST_ARRAY:
@@ -205,6 +235,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_HASHTABLE:
             table = allocateHashTable(100000);
+            break;
+        case TEST_HEAP:
+            heap = createHeap(100000);
             break;
     }
 
@@ -225,6 +258,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_HASHTABLE:
             readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
+            break;
+        case TEST_HEAP:
+            readHeapFromInputFile(heap, buffer, &comparisons, &arithmetic);
             break;
     }
 
@@ -249,6 +285,8 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             removeHashTable(table, getWorstCaseTable(table), &comparisons, &arithmetic);
             break;
+        case TEST_HEAP:
+            break;
     }
 
     printf("Removing element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
@@ -268,6 +306,9 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             break;
         case TEST_HASHTABLE:
             insertHashTable(table, element, &comparisons, &arithmetic);
+            break;
+        case TEST_HEAP:
+            insertHeap(heap, element, &comparisons, &arithmetic);
             break;
     }
 
@@ -297,7 +338,12 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             comparisons++;
             break;
         case TEST_HASHTABLE:
-            found = findHashTable(table, element, &comparisons, &arithmetic);
+            found = findHashTable(table, element, &comparisons, &arithmetic) != -1;
+            comparisons++;
+            break;
+        case TEST_HEAP:
+            found = getHeapIndex(heap, element, &comparisons, &arithmetic) != -1;
+            comparisons++;
             break;
     }
 
@@ -326,13 +372,15 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             worstElement = getWorstCaseTable(table);
             break;
+        case TEST_HEAP:
+            worstElement = getWorstCaseHeap(heap);
+            break;
     }
 
     end = clock();
     elapsed_time = (double) (end - start) / CLOCKS_PER_SEC;
 
     printf("Getting n^th element - worst case (final element): %.30f\n", elapsed_time);
-    printf("Getting n^th element took %d comparisons and %d arithmetic operations\n", comparisons, arithmetic);
 
     // Removing element
     comparisons = 0;
@@ -352,6 +400,8 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
         case TEST_HASHTABLE:
             removeHashTable(table, worstElement, &comparisons, &arithmetic);
             break;
+        case TEST_HEAP:
+            break;
     }
 
     end = clock();
@@ -367,10 +417,13 @@ void worstCaseTest(TestType test, const char *type, RUNTIME_TYPE element) {
             freeList(&head);
             break;
         case TEST_BTREE:
-            //tree = destroyBtree(tree);
+            freeTree(tree);
             break;
         case TEST_HASHTABLE:
             freeHashTable(table);
+            break;
+        case TEST_HEAP:
+            freeHeap(heap);
             break;
     }
 }
@@ -387,6 +440,7 @@ void avgCaseTest(TestType test, const char *type) {
         ListNode *head = NULL;
         TreeNode *tree = NULL;
         HashTable *table = NULL;
+        Heap *heap = NULL;
 
         switch (test) {
             case TEST_ARRAY:
@@ -399,6 +453,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_HASHTABLE:
                 table = allocateHashTable(100000);
+                break;
+            case TEST_HEAP:
+                heap = createHeap(100000);
                 break;
         }
 
@@ -417,6 +474,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_HASHTABLE:
                 readTableFromInputFile(table, buffer, &comparisons, &arithmetic);
+                break;
+            case TEST_HEAP:
+                readHeapFromInputFile(heap, buffer, &comparisons, &arithmetic);
                 break;
         }
 
@@ -441,6 +501,9 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_HASHTABLE:
                 num = getWorstCaseTable(table);
                 break;
+            case TEST_HEAP:
+                num = getWorstCaseHeap(heap);
+                break;
         }
 
         // Adding element
@@ -460,6 +523,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_HASHTABLE:
                 insertHashTable(table, num, &comparisons, &arithmetic);
+                break;
+            case TEST_HEAP:
+                insertHeap(heap, num, &comparisons, &arithmetic);
                 break;
         }
 
@@ -486,9 +552,15 @@ void avgCaseTest(TestType test, const char *type) {
                     found = false;
                 }
                 else found = true;
+                comparisons++;
                 break;
             case TEST_HASHTABLE:
-                found = findHashTable(table, num, &comparisons, &arithmetic);
+                found = findHashTable(table, num, &comparisons, &arithmetic) != -1;
+                comparisons++;
+                break;
+            case TEST_HEAP:
+                found = getHeapIndex(heap, num, &comparisons, &arithmetic) != -1;
+                comparisons++;
                 break;
         }
 
@@ -515,6 +587,9 @@ void avgCaseTest(TestType test, const char *type) {
                 break;
             case TEST_HASHTABLE:
                 avgElement = getAvgCaseTable(table);
+                break;
+            case TEST_HEAP:
+                avgElement = getAvgCaseHeap(heap);
                 break;
         }
 
@@ -544,6 +619,8 @@ void avgCaseTest(TestType test, const char *type) {
             case TEST_HASHTABLE:
                 removeHashTable(table, avgElement, &comparisons, &arithmetic);
                 break;
+            case TEST_HEAP:
+                break;
         }
 
         end = clock();
@@ -557,10 +634,13 @@ void avgCaseTest(TestType test, const char *type) {
                 freeList(&head);
                 break;
             case TEST_BTREE:
-                //tree = destroyBtree(tree);
+                freeTree(tree);
                 break;
             case TEST_HASHTABLE:
                 freeHashTable(table);
+                break;
+            case TEST_HEAP:
+                freeHeap(heap);
                 break;
         }
     }

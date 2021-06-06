@@ -100,7 +100,7 @@ void askForDataStructure() {
     system("cls");
     printf("STRUCTURE TESTER\n");
     printf("================\n");
-    printf("Which data sturcture would you like to test?\n\n");
+    printf("Which data structure would you like to test?\n\n");
     printf("0. None, please regenerate test files\n");
     printf("1. Array\n");
     printf("2. Dynamic List\n");
@@ -136,7 +136,6 @@ void askForDataStructure() {
 }
 
 int main() {
-
     srand(time(0));
 
     generateAllFiles();

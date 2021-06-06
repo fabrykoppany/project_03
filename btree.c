@@ -217,18 +217,14 @@ TreeNode * readBtreeFromInputFile(TreeNode *tree, const char *file_name, int *co
     return tree;
 }
 
-TreeNode *destroyBtree(TreeNode *tree){
-    int comp = 0;
-
-    while (tree != NULL){
-        RUNTIME_TYPE mini = minValueNode(tree, &comp)->value;
-        tree = deleteNode(tree, mini, &comp);
-        if (tree == NULL){
-            break;
-        }
+void freeTree(TreeNode *tree){
+    if (tree == NULL) {
+        return;
     }
 
-    return tree;
+    freeTree(tree->left);
+    freeTree(tree->right);
+    free(tree);
 }
 
 RUNTIME_TYPE getWorstCaseBtree(TreeNode *tree, int height) {
